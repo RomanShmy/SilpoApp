@@ -13,7 +13,7 @@ namespace Silpo {
             {
                 Open();
             }
-            
+
             check.AddProduct(product);
         }
 
@@ -21,6 +21,14 @@ namespace Silpo {
             Check closedCheck = check;
             check = null;
             return closedCheck;
+        }
+
+        public void useOffer(AnyGoodsOffer offer)
+        {
+            if (check.GetTotalCost() > offer.totalCost)
+            {
+                check.AddPoints(offer.points);
+            }
         }
     }
 }

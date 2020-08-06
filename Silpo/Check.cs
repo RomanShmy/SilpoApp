@@ -7,6 +7,7 @@ namespace Silpo
     {
 
         private List<Product> products;
+        private int points;
 
         public Check() 
         {
@@ -30,7 +31,13 @@ namespace Silpo
 
         public int GetTotalPoints()
         {
-            return GetTotalCost();
+            
+            return GetTotalCost() + points;
+        }
+
+        internal void AddPoints(int points)
+        {
+            this.points += points;
         }
     }
 }
