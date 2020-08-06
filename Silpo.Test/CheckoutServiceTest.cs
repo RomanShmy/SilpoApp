@@ -26,9 +26,7 @@ namespace Silpo.Test
             checkoutService.AddProduct(new Product(7, "Milk"));
             checkoutService.AddProduct(new Product(3, "Bread"));
             Check check = checkoutService.Close();
-
             Assert.Equal(10, check.GetTotalCost());
-
         }
         
     }

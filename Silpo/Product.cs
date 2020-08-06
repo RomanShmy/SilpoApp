@@ -2,8 +2,8 @@ namespace Silpo
 {
     public class Product
     {
-        public int price;
-        public string name;
+        public int price { get; }
+        private string name;
 
         public Product(int price, string name)
         {

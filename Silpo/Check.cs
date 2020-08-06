@@ -5,13 +5,27 @@ namespace Silpo
 {
     public class Check
     {
-        public int totalCost;
 
-        public List<Product> products;
+        private List<Product> products;
 
+        public Check() 
+        {
+            
+            products = new List<Product>();
+        }
         public int GetTotalCost()
         {
+            int totalCost = 0;
+            foreach(var product in this.products)
+            {
+                totalCost += product.price;
+            }
             return totalCost;
+        }
+
+        internal void AddProduct(Product product)
+        {
+            products.Add(product);
         }
     }
 }
