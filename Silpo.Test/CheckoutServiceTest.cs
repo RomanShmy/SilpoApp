@@ -13,7 +13,7 @@ namespace Silpo.Test
         {
             checkoutService = new CheckoutService();
             checkoutService.Open();
-            milk = new Product(7, "Milk");
+            milk = new Product(7, "Milk", Category.MILK);
             bread = new Product(3, "Bread");
         }
 
@@ -76,6 +76,18 @@ namespace Silpo.Test
             checkoutService.useOffer(new AnyGoodsOffer(6, 2));
             Check check = checkoutService.Close();
             Assert.Equal(3, check.GetTotalPoints());
+        }
+
+        [Fact]
+        public void useOffer__factorByCategory()
+        {
+            checkoutService.AddProduct(milk);
+            checkoutService.AddProduct(milk);
+            checkoutService.AddProduct(bread);
+
+            checkoutService.useOffer(new FactorByCategoryOffer(Category.MILK, 2));
+            Check check = checkoutService.Close();
+            Assert.Equal(31, check.GetTotalPoints());
         }
 
         

@@ -1,3 +1,4 @@
+using System.Linq;
 using System;
 using System.Collections.Generic;
 
@@ -38,6 +39,11 @@ namespace Silpo
         internal void AddPoints(int points)
         {
             this.points += points;
+        }
+
+        internal int getCostByCategory(Category category)
+        {
+            return products.Where(o => o.category.Equals(category)).Sum(o => o.price);
         }
     }
 }
