@@ -27,5 +27,10 @@ namespace Silpo
         {
             products.Add(product);
         }
+
+        public int GetTotalPoints()
+        {
+            return GetTotalCost();
+        }
     }
 }

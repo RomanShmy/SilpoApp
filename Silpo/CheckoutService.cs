@@ -9,11 +9,18 @@ namespace Silpo {
         }
     
         public void AddProduct (Product product) {
+            if(check == null)
+            {
+                Open();
+            }
+            
             check.AddProduct(product);
         }
 
         public Check Close () {
-            return check;
+            Check closedCheck = check;
+            check = null;
+            return closedCheck;
         }
     }
 }
