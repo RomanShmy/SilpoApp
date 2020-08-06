@@ -90,6 +90,18 @@ namespace Silpo.Test
             Assert.Equal(31, check.GetTotalPoints());
         }
 
+         [Fact]
+        public void useOffer__BeforeBuy__factorByCategory()
+        {
+            checkoutService.AddProduct(milk);
+            checkoutService.useOffer(new FactorByCategoryOffer(Category.MILK, 2));
+            checkoutService.AddProduct(milk);
+            checkoutService.AddProduct(bread);
+
+            Check check = checkoutService.Close();
+            Assert.Equal(31, check.GetTotalPoints());
+        }
+
         
     }
 }
