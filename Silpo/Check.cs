@@ -8,14 +8,14 @@ namespace Silpo
     {
 
         private List<Product> products;
-        private List<Offer> offers;
+        public List<Offer> Offers { internal get; set; }
         private int points;
 
         public Check() 
         {
             
             products = new List<Product>();
-            offers = new List<Offer>();
+            Offers = new List<Offer>();
         }
         public int GetTotalCost()
         {
@@ -27,11 +27,6 @@ namespace Silpo
             return totalCost;
         }
 
-        internal List<Offer> getOffers()
-        {
-            return offers;
-        }
-
         internal void AddProduct(Product product)
         {
             products.Add(product);
@@ -39,7 +34,7 @@ namespace Silpo
 
         internal void AddOffer(Offer offer)
         {
-            offers.Add(offer);
+            Offers.Add(offer);
         }
 
         public int GetTotalPoints()

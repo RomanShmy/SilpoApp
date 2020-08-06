@@ -19,7 +19,7 @@ namespace Silpo {
 
         public Check Close () {
             Check closedCheck = check;
-            foreach(var offer in closedCheck.getOffers())
+            foreach(var offer in closedCheck.Offers)
             {
                 offer.Apply(closedCheck);
             }
