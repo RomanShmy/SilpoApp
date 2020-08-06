@@ -6,9 +6,9 @@ namespace Silpo.Test
     public class UnitTest1
     {
         [Fact]
-        public void Test1()
+        public void ZeroEqualZero()
         {
-
+            Assert.Equal(0, 0);
         }
     }
 }

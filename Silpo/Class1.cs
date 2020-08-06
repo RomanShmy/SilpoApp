@@ -4,5 +4,6 @@ namespace Silpo
 {
     public class Class1
     {
+    
     }
 }
