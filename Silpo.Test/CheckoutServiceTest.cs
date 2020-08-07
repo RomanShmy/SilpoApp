@@ -1,6 +1,7 @@
 using System;
 using Xunit;
 using Silpo;
+using Silpo.Offers;
 
 namespace Silpo.Test
 {
@@ -9,12 +10,14 @@ namespace Silpo.Test
         private CheckoutService checkoutService;
         private Product milk;
         private Product bread;
+        private Product water;
         public CheckoutServiceTest()
         {
             checkoutService = new CheckoutService();
             checkoutService.Open();
             milk = new Product(7, "Milk", Category.MILK);
             bread = new Product(3, "Bread");
+            water = new Product(5, "Woter", Category.Null, TradeMark.COCA_COLA);
         }
 
         [Fact]
@@ -126,6 +129,26 @@ namespace Silpo.Test
 
             Check check = checkoutService.Close();
             Assert.Equal(31, check.GetTotalPoints());
+        }
+
+        [Fact]
+        public void useTradeMarkOffer_Factor()
+        {
+            checkoutService.AddProduct(water);
+            checkoutService.AddProduct(bread);
+            checkoutService.useOffer(new TradeMarkFactorOffer(TradeMark.COCA_COLA, 2));
+            Check check = checkoutService.Close();
+            Assert.Equal(13, check.GetTotalPoints());
+        }
+
+        [Fact]
+        public void useTradeMarkOffer_Amount()
+        {
+            checkoutService.AddProduct(water);
+            checkoutService.AddProduct(bread);
+            checkoutService.useOffer(new TradeMarkAmountOffer(TradeMark.COCA_COLA, 2));
+            Check check = checkoutService.Close();
+            Assert.Equal(10, check.GetTotalPoints());
         }
         
     }

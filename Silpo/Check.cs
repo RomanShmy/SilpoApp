@@ -7,13 +7,10 @@ namespace Silpo
     public class Check
     {
 
-        private List<Product> products;
+        public List<Product> products { get; set; } = new List<Product>();
         private int points;
 
-        public Check() 
-        {   
-            products = new List<Product>();
-        }
+        
         public int GetTotalCost() => products.Sum(product => product.price);
 
         internal void AddProduct(Product product)
@@ -30,6 +27,8 @@ namespace Silpo
         }
 
         internal int getCostByCategory(Category category) => products.Where(o => o.category.Equals(category)).Sum(o => o.price);
+        
+        internal int getCostByTradeMark(TradeMark tradeMark) => products.Where(o => o.tradeMark.Equals(tradeMark)).Sum(o => o.price);
     
     }
 }
