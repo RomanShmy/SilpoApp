@@ -4,8 +4,10 @@ using System.Collections.Generic;
 namespace Silpo {
     public class CheckoutService {
         private Check check;
+        private List<Offer> offers;
         public void Open () {
             check = new Check ();
+            offers = new List<Offer>();
         }
     
         public void AddProduct (Product product) {
@@ -19,7 +21,7 @@ namespace Silpo {
 
         public Check Close () {
             Check closedCheck = check;
-            foreach(var offer in closedCheck.Offers)
+            foreach(var offer in offers)
             {
                 offer.Apply(closedCheck);
             }
@@ -29,7 +31,7 @@ namespace Silpo {
 
         public void useOffer(Offer offer)
         {
-            check.AddOffer(offer);
+            offers.Add(offer);
         }
     }
 }

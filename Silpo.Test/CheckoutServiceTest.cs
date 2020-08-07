@@ -90,7 +90,7 @@ namespace Silpo.Test
             Assert.Equal(31, check.GetTotalPoints());
         }
 
-         [Fact]
+        [Fact]
         public void useOffer__BeforeBuy__factorByCategory()
         {
             checkoutService.AddProduct(milk);
@@ -102,6 +102,31 @@ namespace Silpo.Test
             Assert.Equal(31, check.GetTotalPoints());
         }
 
+        [Fact]
+        public void useTwoOffer__BeforeBuy__factorByCategory()
+        {
+            checkoutService.AddProduct(milk);
+            checkoutService.useOffer(new FactorByCategoryOffer(Category.MILK, 2));
+            checkoutService.AddProduct(milk);
+            checkoutService.useOffer(new AnyGoodsOffer(6, 2));
+            checkoutService.AddProduct(bread);
+
+            Check check = checkoutService.Close();
+            Assert.Equal(33, check.GetTotalPoints());
+        }
+
+        [Fact]
+        public void checkExpirateOffer_useOfferIsExpirate()
+        {
+            checkoutService.AddProduct(milk);
+            checkoutService.useOffer(new FactorByCategoryOffer(Category.MILK, 2));
+            checkoutService.AddProduct(milk);
+            checkoutService.useOffer(new AnyGoodsOffer(6, 2, -1));
+            checkoutService.AddProduct(bread);
+
+            Check check = checkoutService.Close();
+            Assert.Equal(31, check.GetTotalPoints());
+        }
         
     }
 }
