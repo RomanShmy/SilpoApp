@@ -18,10 +18,8 @@ namespace Silpo
             }
         }
 
-        protected bool IsExpirate()
-        {
-            return DateTime.Now.Date > expirationDate.Date;
-        }
+        protected bool IsExpirate() => DateTime.Now.Date > expirationDate.Date;
+        
 
         protected abstract void AddPoints(Check check);
 

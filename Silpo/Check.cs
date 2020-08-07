@@ -14,35 +14,22 @@ namespace Silpo
         {   
             products = new List<Product>();
         }
-        public int GetTotalCost()
-        {
-            int totalCost = 0;
-            foreach(var product in this.products)
-            {
-                totalCost += product.price;
-            }
-            return totalCost;
-        }
+        public int GetTotalCost() => products.Sum(product => product.price);
 
         internal void AddProduct(Product product)
         {
             products.Add(product);
         }
         
-        public int GetTotalPoints()
-        {
-            
-            return GetTotalCost() + points;
-        }
+        public int GetTotalPoints() => GetTotalCost() + points;
+        
 
         internal void AddPoints(int points)
         {
             this.points += points;
         }
 
-        internal int getCostByCategory(Category category)
-        {
-            return products.Where(o => o.category.Equals(category)).Sum(o => o.price);
-        }
+        internal int getCostByCategory(Category category) => products.Where(o => o.category.Equals(category)).Sum(o => o.price);
+    
     }
 }
