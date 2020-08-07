@@ -150,6 +150,16 @@ namespace Silpo.Test
             Check check = checkoutService.Close();
             Assert.Equal(10, check.GetTotalPoints());
         }
+
+        [Fact]
+        public void useBonusOffer__withOneProduct()
+        {
+            checkoutService.AddProduct(water);
+            checkoutService.AddProduct(bread);
+            checkoutService.useOffer(new DiscountOffer(50));
+            Check check = checkoutService.Close();
+            Assert.Equal(4, check.GetTotalPoints());
+        }
         
     }
 }
