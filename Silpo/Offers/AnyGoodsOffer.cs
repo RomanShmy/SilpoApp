@@ -1,23 +1,26 @@
 using System;
+using Silpo.Rewards;
+
 namespace Silpo
 {
-    public class AnyGoodsOffer : Offer
+    public class AnyGoodsOffer : IReward
     {
         public int totalCost { get; set; }
         public int points { get; set; }
 
-        public AnyGoodsOffer(int totalCost, int points, int countDay = 7) : base(DateTime.Now.AddDays(countDay))
+        public AnyGoodsOffer(int totalCost, int points, int countDay = 7)
         {
             this.totalCost = totalCost;
             this.points = points;
         }
-
-        protected override void AddPoints(Check check)
+        public int CalcPoints(Check check)
         {
             if (check.GetTotalCost() > this.totalCost)
             {
-                check.AddPoints(this.points);
+                return this.points;
             }
+
+            return 0;
         }
     }
 }

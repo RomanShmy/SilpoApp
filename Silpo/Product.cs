@@ -7,7 +7,7 @@ namespace Silpo
 
         public TradeMark tradeMark { get; }
 
-        private string name;
+        public string name {get; internal set;}
 
 
         public Product(int price, string name) : this(price, name, Category.Null) { }

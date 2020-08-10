@@ -1,21 +1,23 @@
 using System;
+using Silpo.Rewards;
+
 namespace Silpo
 {
-    public class FactorByCategoryOffer : Offer
+    public class FactorByCategoryOffer : IReward
     {
         public Category category { get; set; }
         public int factor { get; set; }
 
-        public FactorByCategoryOffer(Category category, int factor, int countDay = 7) : base(DateTime.Now.AddDays(countDay))
+        public FactorByCategoryOffer(Category category, int factor, int countDay = 7)
         {
             this.category = category;
             this.factor = factor;
         }
 
-        protected override void AddPoints(Check check)
+        public int CalcPoints(Check check)
         {
             int points = check.getCostByCategory(this.category);
-            check.AddPoints(points * (this.factor - 1));
+            return points * (this.factor - 1);
         }
     }
 }

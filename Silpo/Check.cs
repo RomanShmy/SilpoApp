@@ -1,6 +1,7 @@
 using System.Linq;
 using System;
 using System.Collections.Generic;
+using Silpo.Discounts;
 
 namespace Silpo
 {
@@ -9,13 +10,17 @@ namespace Silpo
 
         public List<Product> products { get; set; } = new List<Product>();
         private int points;
-
-        
-        public int GetTotalCost() => products.Sum(product => product.price);
+        private int discount;
+        public int GetTotalCost() => products.Sum(product => product.price) - discount;
 
         internal void AddProduct(Product product)
         {
             products.Add(product);
+        }
+
+        internal void AddDiscount(int discount)
+        {
+            this.discount += discount;
         }
         
         public int GetTotalPoints() => GetTotalCost() + points;
@@ -25,6 +30,8 @@ namespace Silpo
         {
             this.points += points;
         }
+
+        internal List<Product> GetProductsByName(string productName) => products.Where(product => product.name.Equals(productName)).ToList();
 
         internal int getCostByCategory(Category category) => products.Where(o => o.category.Equals(category)).Sum(o => o.price);
         

@@ -2,6 +2,8 @@ using System;
 using Xunit;
 using Silpo;
 using Silpo.Offers;
+using Silpo.Rewards;
+using Silpo.Discounts;
 
 namespace Silpo.Test
 {
@@ -11,6 +13,13 @@ namespace Silpo.Test
         private Product milk;
         private Product bread;
         private Product water;
+        private Product cheese;
+        private IReward AnyGoodsOffer;
+        private IReward FactorByCategoryOffer;
+        private IReward TradeMarkAmountOffer;
+        private IReward TradeMarkFactorOffer;
+        private IDiscountRule percent;
+        private IDiscountRule gift;
         public CheckoutServiceTest()
         {
             checkoutService = new CheckoutService();
@@ -18,6 +27,12 @@ namespace Silpo.Test
             milk = new Product(7, "Milk", Category.MILK);
             bread = new Product(3, "Bread");
             water = new Product(5, "Woter", Category.Null, TradeMark.COCA_COLA);
+            cheese = new Product(10, "Cheese");
+            AnyGoodsOffer = new AnyGoodsOffer(6, 2);
+            FactorByCategoryOffer = new FactorByCategoryOffer(Category.MILK, 2);
+            TradeMarkFactorOffer = new TradeMarkFactorOffer(TradeMark.COCA_COLA, 2);
+            TradeMarkAmountOffer = new TradeMarkAmountOffer(TradeMark.COCA_COLA, 2);
+            percent = new Percent("Cheese");
         }
 
         [Fact]
@@ -66,7 +81,7 @@ namespace Silpo.Test
             checkoutService.AddProduct(milk);
             checkoutService.AddProduct(bread);
 
-            checkoutService.useOffer(new AnyGoodsOffer(6, 2));
+            checkoutService.useOffer(new BonusOffer(AnyGoodsOffer));
             Check check = checkoutService.Close();
             Assert.Equal(12, check.GetTotalPoints());
         }
@@ -76,7 +91,7 @@ namespace Silpo.Test
         {
             checkoutService.AddProduct(bread);
 
-            checkoutService.useOffer(new AnyGoodsOffer(6, 2));
+            checkoutService.useOffer(new BonusOffer(AnyGoodsOffer));
             Check check = checkoutService.Close();
             Assert.Equal(3, check.GetTotalPoints());
         }
@@ -88,7 +103,7 @@ namespace Silpo.Test
             checkoutService.AddProduct(milk);
             checkoutService.AddProduct(bread);
 
-            checkoutService.useOffer(new FactorByCategoryOffer(Category.MILK, 2));
+            checkoutService.useOffer(new BonusOffer(FactorByCategoryOffer));
             Check check = checkoutService.Close();
             Assert.Equal(31, check.GetTotalPoints());
         }
@@ -97,7 +112,7 @@ namespace Silpo.Test
         public void useOffer__BeforeBuy__factorByCategory()
         {
             checkoutService.AddProduct(milk);
-            checkoutService.useOffer(new FactorByCategoryOffer(Category.MILK, 2));
+            checkoutService.useOffer(new BonusOffer(FactorByCategoryOffer));
             checkoutService.AddProduct(milk);
             checkoutService.AddProduct(bread);
 
@@ -109,9 +124,9 @@ namespace Silpo.Test
         public void useTwoOffer__BeforeBuy__factorByCategory()
         {
             checkoutService.AddProduct(milk);
-            checkoutService.useOffer(new FactorByCategoryOffer(Category.MILK, 2));
+            checkoutService.useOffer(new BonusOffer(FactorByCategoryOffer));
             checkoutService.AddProduct(milk);
-            checkoutService.useOffer(new AnyGoodsOffer(6, 2));
+            checkoutService.useOffer(new BonusOffer(AnyGoodsOffer));
             checkoutService.AddProduct(bread);
 
             Check check = checkoutService.Close();
@@ -122,9 +137,9 @@ namespace Silpo.Test
         public void checkExpirateOffer_useOfferIsExpirate()
         {
             checkoutService.AddProduct(milk);
-            checkoutService.useOffer(new FactorByCategoryOffer(Category.MILK, 2));
+            checkoutService.useOffer(new BonusOffer(FactorByCategoryOffer));
             checkoutService.AddProduct(milk);
-            checkoutService.useOffer(new AnyGoodsOffer(6, 2, -1));
+            checkoutService.useOffer(new BonusOffer(AnyGoodsOffer, -1));
             checkoutService.AddProduct(bread);
 
             Check check = checkoutService.Close();
@@ -136,7 +151,7 @@ namespace Silpo.Test
         {
             checkoutService.AddProduct(water);
             checkoutService.AddProduct(bread);
-            checkoutService.useOffer(new TradeMarkFactorOffer(TradeMark.COCA_COLA, 2));
+            checkoutService.useOffer(new BonusOffer(TradeMarkFactorOffer));
             Check check = checkoutService.Close();
             Assert.Equal(13, check.GetTotalPoints());
         }
@@ -146,7 +161,7 @@ namespace Silpo.Test
         {
             checkoutService.AddProduct(water);
             checkoutService.AddProduct(bread);
-            checkoutService.useOffer(new TradeMarkAmountOffer(TradeMark.COCA_COLA, 2));
+            checkoutService.useOffer(new BonusOffer(TradeMarkAmountOffer));
             Check check = checkoutService.Close();
             Assert.Equal(10, check.GetTotalPoints());
         }
@@ -154,12 +169,14 @@ namespace Silpo.Test
         [Fact]
         public void useBonusOffer__withOneProduct()
         {
-            checkoutService.AddProduct(water);
+            checkoutService.AddProduct(cheese);
             checkoutService.AddProduct(bread);
-            checkoutService.useOffer(new DiscountOffer(50));
+            checkoutService.useOffer(new DiscountOffer(percent));
             Check check = checkoutService.Close();
-            Assert.Equal(4, check.GetTotalPoints());
+            Assert.Equal(8, check.GetTotalPoints());
         }
+
+        
         
     }
 }

@@ -1,21 +1,19 @@
 using System;
+using Silpo.Discounts;
+
 namespace Silpo.Offers
 {
     public class DiscountOffer : Offer
     {
-        private int percent;
+        private IDiscountRule discountRule;
 
-        public DiscountOffer(int percent, int countDays = 7) : base(DateTime.Now.AddDays(countDays))
+        public DiscountOffer(IDiscountRule discountRule, int countDays = 7) : base(DateTime.Now.AddDays(countDays))
         {
-            this.percent = percent;
+            this.discountRule = discountRule;
         }
         protected override void AddPoints(Check check)
         {
-            int totalCost = check.GetTotalCost();
-            int costWithDiscount = totalCost - totalCost * percent / 100;
-
-            check.AddPoints(-costWithDiscount);
-            
+            check.AddDiscount(discountRule.CalcDiscount(check).Amount);   
         }
     }
 }

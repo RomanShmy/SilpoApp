@@ -1,20 +1,23 @@
 using System;
+using Silpo.Rewards;
+
 namespace Silpo.Offers
 {
-    public class TradeMarkFactorOffer : Offer
+    public class TradeMarkFactorOffer : IReward
     {
         private TradeMark tradeMark;
         private int factor;
 
-        public TradeMarkFactorOffer(TradeMark tradeMark, int factor, int countDays = 7) : base(DateTime.Now.AddDays(countDays))
+        public TradeMarkFactorOffer(TradeMark tradeMark, int factor, int countDays = 7)
         {
             this.tradeMark = tradeMark;
             this.factor = factor;
         }
-        protected override void AddPoints(Check check)
+
+        public int CalcPoints(Check check)
         {
             int points = check.getCostByTradeMark(this.tradeMark);
-            check.AddPoints(points * (this.factor - 1));
+            return points * (this.factor - 1);
         }
     }
 }
