@@ -4,6 +4,7 @@ using Silpo;
 using Silpo.Offers;
 using Silpo.Rewards;
 using Silpo.Discounts;
+using Silpo.Condition;
 
 namespace Silpo.Test
 {
@@ -139,7 +140,7 @@ namespace Silpo.Test
             checkoutService.AddProduct(milk);
             checkoutService.useOffer(new BonusOffer(FactorByCategoryOffer));
             checkoutService.AddProduct(milk);
-            checkoutService.useOffer(new BonusOffer(AnyGoodsOffer, -1));
+            checkoutService.useOffer(new BonusOffer(AnyGoodsOffer, null, -1));
             checkoutService.AddProduct(bread);
 
             Check check = checkoutService.Close();
@@ -176,6 +177,27 @@ namespace Silpo.Test
             Assert.Equal(8, check.GetTotalPoints());
         }
 
+        [Fact]
+        public void useAnyGoodsOffer__withTotalCostCondition()
+        {
+            checkoutService.AddProduct(cheese);
+            ICondition condition = new TotalCost(6);
+            checkoutService.useOffer(new BonusOffer(AnyGoodsOffer, condition));
+            Check check = checkoutService.Close();
+            Assert.Equal(12, check.GetTotalPoints());
+        }
+
+        [Fact]
+        public void useFactorByCategoryOffer__withByCategoryCondition()
+        {
+            checkoutService.AddProduct(milk);
+            checkoutService.AddProduct(milk);
+            checkoutService.AddProduct(bread);
+            ICondition condition = new ByCategory(Category.MILK);
+            checkoutService.useOffer(new BonusOffer(FactorByCategoryOffer, condition));
+            Check check = checkoutService.Close();
+            Assert.Equal(31, check.GetTotalPoints());
+        }
         
         
     }

@@ -1,4 +1,5 @@
 using System;
+using Silpo.Condition;
 using Silpo.Rewards;
 
 namespace Silpo.Offers
@@ -7,7 +8,7 @@ namespace Silpo.Offers
     {
         private IReward reward;
 
-        public BonusOffer(IReward reward, int countDays = 7) : base(DateTime.Now.AddDays(countDays))
+        public BonusOffer(IReward reward, ICondition condition = null, int countDays = 7) : base(condition, DateTime.Now.AddDays(countDays))
         {
             this.reward = reward;
         }
